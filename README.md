@@ -23,21 +23,20 @@ Yöntem 1: Python ile Çalıştırma (Manuel)
 Bilgisayarınızda Python varsa aşağıdaki adımları yapmanız yeterli.
 
 1. Önce gerekli kütüphaneyi yükleyin. (Sadece yaml dosyasını okumak için bir kütüphane kullandım, başka ağır bir şey yok).
-   pip install -r requirements.txt
+- pip install -r requirements.txt
 
 2. Sonra programı başlatın:
-   python main.py
+- python main.py
 
 Yöntem 2: Docker ile Çalıştırma
 Eğer kütüphane kurulumuyla uğraşmak istemezseniz projeyi Dockerize ettim.
 
 1. İmajı oluşturun:
-   docker-compose build
+- docker-compose build
 
 2. Programı başlatın:
-   docker-compose run --rm log-analyzer
+-  docker-compose run --rm log-analyzer
 
-(Buradaki -v komutları önemli. Konteyner içinde oluşan raporları kendi bilgisayarımızda görebilmek için klasörleri birbirine bağlıyoruz).
 
 ---
 
@@ -57,10 +56,10 @@ Bu seçenek Linux sistemlerdeki "tail -f" komutu gibi çalışır.
 - Dosyaya yeni bir satır eklendiği an (mesela bir saldırı girişimi olduğunda) program bunu yakalar ve ekrana kırmızı renkli bir ALARM basar.
 - Test etmek için program açıkken başka bir terminalden o dosyaya yazı yazdırabilirsiniz.
 
----
-
 3. Çıkış
 Programı kapatır.
+
+---
 
 ## TESPİT EDİLEBİLEN SALDIRILAR
 Config klasöründeki rules.yaml dosyasına şu kuralları tanımladım, bunları tespit edebiliyor:

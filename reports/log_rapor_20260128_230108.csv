@@ -1,0 +1,11 @@
+﻿timestamp,severity,rule_name,description,line_number,log_line
+2026-01-28 23:01:05,HIGH,SSH Brute Force Attempt,Geçersiz kullanıcı veya hatalı şifre ile çoklu giriş denemesi.,1,Jan 29 10:00:01 server sshd[123]: Failed password for invalid user admin from 192.168.1.50
+2026-01-28 23:01:05,HIGH,SSH Brute Force Attempt,Geçersiz kullanıcı veya hatalı şifre ile çoklu giriş denemesi.,2,Jan 29 10:00:05 server sshd[123]: Failed password for invalid user root from 192.168.1.51
+2026-01-28 23:01:05,CRITICAL,SSH Successful Root Login,Root kullanıcısı uzaktan başarılı giriş yaptı.,3,Jan 29 10:05:00 server sshd[124]: Accepted password for root from 10.0.0.99 port 22
+2026-01-28 23:01:05,CRITICAL,SQL Injection Attempt,URL içinde SQL enjeksiyonu saldırı imzası tespit edildi.,4,"192.168.1.100 - - [29/Jan/2026:10:10:00 +0300] ""GET /login.php?user=admin' OR 1=1-- HTTP/1.1"" 200 450"
+2026-01-28 23:01:05,HIGH,XSS (Cross Site Scripting),Zararlı JavaScript kodu çalıştırma girişimi.,5,"192.168.1.101 - - [29/Jan/2026:10:12:00 +0300] ""GET /search.php?q=<script>alert('XSS')</script> HTTP/1.1"" 200 150"
+2026-01-28 23:01:05,MEDIUM,Sudo Privilege Escalation,Bir kullanıcı yetkili haklarla (SUDO) komut çalıştırdı.,6,Jan 29 10:15:00 server sudo: mehmet : TTY=pts/1 ; PWD=/home/mehmet ; USER=root ; COMMAND=/bin/bash
+2026-01-28 23:01:05,HIGH,New User Creation,Sistemde yeni bir kullanıcı oluşturuldu.,7,"Jan 29 10:20:00 server useradd[125]: new user: name=backdoor_user, UID=0, GID=0, home=/root, shell=/bin/bash"
+2026-01-28 23:01:05,CRITICAL,Directory Traversal,Dizin geçişi ile sistem dosyalarına erişim denemesi.,8,"192.168.1.102 - - [29/Jan/2026:10:25:00 +0300] ""GET /etc/passwd HTTP/1.1"" 403 0"
+2026-01-28 23:01:05,MEDIUM,Critical System Failure,Çekirdek veya sistem servisinde kritik hata oluştu.,9,Jan 29 10:30:00 server kernel: [1234.5678] critical error: CPU temperature critical
+2026-01-28 23:01:05,LOW,Web Scanner/Bot Probe,Otomatik tarayıcılar tarafından bilinmeyen dosya taraması.,10,"192.168.1.103 - - [29/Jan/2026:10:35:00 +0300] ""GET /admin-panel HTTP/1.1"" 404 120"

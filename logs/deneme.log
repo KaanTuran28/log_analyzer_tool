@@ -1,0 +1,10 @@
+Jan 29 10:00:01 server sshd[123]: Failed password for invalid user admin from 192.168.1.50
+Jan 29 10:00:05 server sshd[123]: Failed password for invalid user root from 192.168.1.51
+Jan 29 10:05:00 server sshd[124]: Accepted password for root from 10.0.0.99 port 22
+192.168.1.100 - - [29/Jan/2026:10:10:00 +0300] "GET /login.php?user=admin' OR 1=1-- HTTP/1.1" 200 450
+192.168.1.101 - - [29/Jan/2026:10:12:00 +0300] "GET /search.php?q=<script>alert('XSS')</script> HTTP/1.1" 200 150
+Jan 29 10:15:00 server sudo: mehmet : TTY=pts/1 ; PWD=/home/mehmet ; USER=root ; COMMAND=/bin/bash
+Jan 29 10:20:00 server useradd[125]: new user: name=backdoor_user, UID=0, GID=0, home=/root, shell=/bin/bash
+192.168.1.102 - - [29/Jan/2026:10:25:00 +0300] "GET /etc/passwd HTTP/1.1" 403 0
+Jan 29 10:30:00 server kernel: [1234.5678] critical error: CPU temperature critical
+192.168.1.103 - - [29/Jan/2026:10:35:00 +0300] "GET /admin-panel HTTP/1.1" 404 120

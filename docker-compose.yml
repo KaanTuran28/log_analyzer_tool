@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  log-analyzer:
+    build: .
+    container_name: soc_log_tool
+    stdin_open: true 
+    tty: true        
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./config:/app/config

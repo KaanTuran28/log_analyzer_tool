@@ -1,79 +1,125 @@
-# LOG ANALİZ VE SOC UYARI SİSTEMİ
+# Log Analysis & SOC Alert System
 
-Merhaba,
-Bu projeyi, sunucu loglarında meydana gelen şüpheli durumları ve saldırı girişimlerini tespit etmek için geliştirdim. SOC (Güvenlik Operasyon Merkezi) süreçlerinde sürekli loglara bakmak zor olduğu için, bu işlem Python ile otomatik hale getirildi. Program hem eski log dosyalarını tarayıp rapor çıkartabiliyor hem de sunucuyu canlı olarak (real-time) takip edebiliyor.
+![Python](https://img.shields.io/badge/python-3.x-blue)
+![Docker](https://img.shields.io/badge/Docker-2496ED)
+![License](https://img.shields.io/badge/license-MIT-green)
 
----
-
-## PROJE KLASÖRLERİ VE DOSYALAR
-Proje şu şekilde bir dosya yapısına sahip:
-
-- **src**: Programın ana kodları burada (analiz motoru, takip modülü vs).
-- **config**: Kuralların olduğu dosya burada (rules.yaml). Saldırı imzalarını buradan değiştirebilirsiniz.
-- **logs**: Test yapmak için log dosyalarını buraya koyuyoruz.
-- **reports**: Analiz bitince oluşan Excel (CSV) raporları buraya kaydediliyor.
-- **Dockerfile**: Projeyi sanal ortamda (container) çalıştırmak için gerekli dosya.
+<p align="center"><b><a href="#english">English</a></b> · <b><a href="#türkçe">Türkçe</a></b></p>
 
 ---
 
-## KURULUM VE ÇALIŞTIRMA
-Programı çalıştırmak için iki yöntem var. Python yüklü ise direkt çalıştırabilirsiniz veya Docker kullanabilirsiniz.
+## English
 
-### Yöntem 1: Python ile Çalıştırma (Manuel)
-Bilgisayarınızda Python varsa aşağıdaki adımları yapmanız yeterli.
+A Python tool for detecting suspicious activity and attack attempts in server logs. Constantly watching logs by hand is hard in SOC (Security Operations Center) work, so this automates it: it can scan old log files and produce a report, or follow a server's logs live in real time.
 
-#### 1. Önce gerekli kütüphaneyi yükleyin. (Sadece yaml dosyasını okumak için bir kütüphane kullandım, başka ağır bir şey yok).
-- pip install -r requirements.txt
+### Project layout
 
-#### 2. Sonra programı başlatın:
-- python main.py
+- **src** — the main code (analysis engine, live-monitoring module, etc.).
+- **config** — the rules file (`rules.yaml`). Edit attack signatures here.
+- **logs** — put log files here for testing.
+- **reports** — CSV reports are written here after analysis.
+- **Dockerfile** — to run the project in a container.
 
-### Yöntem 2: Docker ile Çalıştırma
-Eğer kütüphane kurulumuyla uğraşmak istemezseniz projeyi Dockerize ettim.
+### Setup and running
 
-#### 1. İmajı oluşturun:
-- docker-compose build
+**Option 1 — Python (manual):**
 
-#### 2. Programı başlatın:
--  docker-compose run --rm log-analyzer
+```bash
+pip install -r requirements.txt   # only a YAML-reading library, nothing heavy
+python main.py
+```
 
+**Option 2 — Docker:**
+
+```bash
+docker-compose build
+docker-compose run --rm log-analyzer
+```
+
+### How to use
+
+When the program starts it shows a three-option menu:
+
+1. **File analysis (static):** scans a saved log file from start to end. It asks for the file path (e.g. `logs/auth.log`), prints a summary (how many errors, how many attacks) and then offers to save a detailed CSV report into `reports/`.
+2. **Live monitoring:** works like Linux `tail -f`. You give it a file path (e.g. `logs/live.log`) and it keeps listening; the moment a new line is added (e.g. an attack attempt) it catches it and prints a red ALARM. To test, append lines to that file from another terminal while it runs.
+3. **Exit.**
+
+### Detected attacks
+
+The rules defined in `config/rules.yaml`:
+
+- SSH brute force (failed password attempts)
+- Root login
+- SQL injection
+- XSS (malicious script attempts)
+- New user creation (suspicious account creation)
+- Sudo privilege (privileged command execution)
+- Critical system errors
+
+### Notes
+
+- File reads use UTF-8 to avoid Turkish-character issues.
+- In live-monitoring mode, press `Ctrl` + `C` to quit.
+
+### License
+
+MIT — see [LICENSE](./LICENSE).
 
 ---
 
-## PROGRAM NASIL KULLANILIR?
-Programı açtığınızda karşınıza 3 seçenekli bir menü gelir:
+## Türkçe
 
-### 1. Dosya Analizi (Statik)
-Bu seçenek, daha önceden kaydedilmiş bir log dosyasını baştan sona taramak içindir.
-- Seçimi yaptıktan sonra sizden dosya yolunu ister (Örneğin: logs/auth.log).
-- Dosyayı tarar ve ekrana bir özet çıkarır (Kaç tane hata var, kaç tane saldırı var vs).
-- İşlem bitince "CSV olarak kaydedilsin mi?" diye sorar. Evet derseniz reports klasörüne detaylı bir rapor dosyası oluşturur.
+Sunucu loglarında meydana gelen şüpheli durumları ve saldırı girişimlerini tespit etmek için geliştirilmiş bir Python aracı. SOC (Güvenlik Operasyon Merkezi) süreçlerinde sürekli loglara bakmak zor olduğu için bu işlem otomatikleştirildi: program hem eski log dosyalarını tarayıp rapor çıkarabiliyor hem de sunucuyu canlı (real-time) takip edebiliyor.
 
-### 2. Canlı Takip (Live Monitoring)
-Bu seçenek Linux sistemlerdeki "tail -f" komutu gibi çalışır.
-- Dosya yolunu girersiniz (Örneğin: logs/canli.log).
-- Program o dosyayı sürekli dinlemeye başlar.
-- Dosyaya yeni bir satır eklendiği an (mesela bir saldırı girişimi olduğunda) program bunu yakalar ve ekrana kırmızı renkli bir ALARM basar.
-- Test etmek için program açıkken başka bir terminalden o dosyaya yazı yazdırabilirsiniz.
+### Proje klasörleri
 
-### 3. Çıkış
-Programı kapatır.
+- **src** — programın ana kodları (analiz motoru, canlı takip modülü vb.).
+- **config** — kuralların olduğu dosya (`rules.yaml`). Saldırı imzalarını buradan değiştirebilirsiniz.
+- **logs** — test için log dosyalarını buraya koyuyoruz.
+- **reports** — analiz bitince oluşan CSV raporları buraya kaydediliyor.
+- **Dockerfile** — projeyi container'da çalıştırmak için.
 
----
+### Kurulum ve çalıştırma
 
-## TESPİT EDİLEBİLEN SALDIRILAR
-Config klasöründeki rules.yaml dosyasına şu kuralları tanımladım, bunları tespit edebiliyor:
+**Yöntem 1 — Python (manuel):**
 
-- SSH Brute Force (Hatalı şifre denemeleri)
-- Root Login (Root kullanıcısı ile giriş yapılması)
-- SQL Injection (Veritabanı saldırıları)
-- XSS (Zararlı script çalıştırma denemeleri)
-- Yeni Kullanıcı Oluşturma (Sistemde şüpheli kullanıcı açılması)
-- Sudo Yetkisi (Yetkili komut çalıştırılması)
-- Kritik Sistem Hataları
+```bash
+pip install -r requirements.txt   # sadece YAML okumak için bir kütüphane, ağır bir şey yok
+python main.py
+```
 
----
+**Yöntem 2 — Docker:**
 
-## NOTLAR
-- Programda Türkçe karakter sorunu olmaması için dosya okuma işlemlerinde utf-8 kullandım.
-- Canlı takip modundayken programdan çıkmak için klavyeden CTRL ve C tuşlarına aynı anda basmanız yeterlidir.
+```bash
+docker-compose build
+docker-compose run --rm log-analyzer
+```
+
+### Nasıl kullanılır?
+
+Program açıldığında 3 seçenekli bir menü gelir:
+
+1. **Dosya analizi (statik):** kaydedilmiş bir log dosyasını baştan sona tarar. Dosya yolunu ister (ör. `logs/auth.log`), bir özet çıkarır (kaç hata, kaç saldırı) ve ardından `reports/` klasörüne detaylı CSV rapor kaydetmeyi önerir.
+2. **Canlı takip:** Linux'taki `tail -f` gibi çalışır. Dosya yolunu girersiniz (ör. `logs/canli.log`), program dosyayı sürekli dinler; yeni bir satır eklendiği an (ör. bir saldırı girişimi) bunu yakalar ve ekrana kırmızı bir ALARM basar. Test için program açıkken başka bir terminalden o dosyaya satır ekleyebilirsiniz.
+3. **Çıkış.**
+
+### Tespit edilebilen saldırılar
+
+`config/rules.yaml` içinde tanımlı kurallar:
+
+- SSH Brute Force (hatalı şifre denemeleri)
+- Root Login
+- SQL Injection
+- XSS (zararlı script çalıştırma denemeleri)
+- Yeni kullanıcı oluşturma (şüpheli hesap açılması)
+- Sudo yetkisi (yetkili komut çalıştırılması)
+- Kritik sistem hataları
+
+### Notlar
+
+- Türkçe karakter sorunu olmaması için dosya okuma işlemlerinde UTF-8 kullanıldı.
+- Canlı takip modundan çıkmak için `Ctrl` + `C`.
+
+### Lisans
+
+MIT — bkz. [LICENSE](./LICENSE).
